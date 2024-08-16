@@ -1,0 +1,961 @@
+ss-pr-cpu-37nwe@ssprcpu37nwe-ThinkCentre-neo-50s-Gen-3:~$ mongosh "mongodb+srv://cluster0.oi1o4.mongodb.net/" --apiVersion 1 --username keerthanamurugesan
+Enter password: ****************
+Current Mongosh Log ID:	66beed4abde138b314838725
+Connecting to:		mongodb+srv://<credentials>@cluster0.oi1o4.mongodb.net/?appName=mongosh+2.2.15
+Using MongoDB:		7.0.12 (API Version 1)
+Using Mongosh:		2.2.15
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+Atlas atlas-cj6gv0-shard-0 [primary] test> show dbs
+mongodbVSCodePlaygroundDB   40.00 KiB
+sample_mflix               110.69 MiB
+admin                      296.00 KiB
+local                      123.75 GiB
+Atlas atlas-cj6gv0-shard-0 [primary] test> use school
+switched to db school
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.createCollection("Students")
+{ ok: 1 }
+Atlas atlas-cj6gv0-shard-0 [primary] school> show dbs
+mongodbVSCodePlaygroundDB   40.00 KiB
+sample_mflix               110.69 MiB
+school                       8.00 KiB
+admin                      296.00 KiB
+local                      123.75 GiB
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.dropDatabase()
+{ ok: 1, dropped: 'school' }
+Atlas atlas-cj6gv0-shard-0 [primary] school> show dbs
+mongodbVSCodePlaygroundDB   40.00 KiB
+sample_mflix               110.69 MiB
+admin                      296.00 KiB
+local                      123.75 GiB
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.insertOne({name: "Spongebob", age:30, gpa: 3.2})
+{
+  acknowledged: true,
+  insertedId: ObjectId('66befb0cbde138b314838726')
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3,8}])
+Uncaught:
+SyntaxError: Unexpected token (1:123)
+
+> 1 | db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3,8}])
+    |                                                                                                                            ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3.8}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66befc38bde138b314838727'),
+    '1': ObjectId('66befc38bde138b314838728'),
+    '2': ObjectId('66befc38bde138b314838729')
+  }
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.insertOne({})
+{
+  acknowledged: true,
+  insertedId: ObjectId('66befe84bde138b31483872a')
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.insertOne({name: "keerthu", age:14, joined_date:new Date(), graduation_date: null, courses: ["maths", "bio"], address : {street: "123 Fake st", city: "chennai", zip: "600092"}})
+{
+  acknowledged: true,
+  insertedId: ObjectId('66befefebde138b31483872b')
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  },
+  { _id: ObjectId('66befe84bde138b31483872a') },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find().sort({name:1})
+[
+  { _id: ObjectId('66befe84bde138b31483872a') },
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find().sort({name:-1})
+[
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5
+  },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  },
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2
+  },
+  { _id: ObjectId('66befe84bde138b31483872a') }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find().sort({gpa: 1}).limit(1)
+[ { _id: ObjectId('66befe84bde138b31483872a') } ]
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find().sort({gpa: -1}).limit(1)
+[
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find({name: "sandy"})
+[
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find({name: "sandy"}, {_ud: false, name: true, gpa: true})
+MongoServerError[Location31253]: Cannot do inclusion on field name in exclusion projection
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find({name: "sandy"}, {_id: false, name: true, gpa: true})
+[ { name: 'sandy', gpa: 4 } ]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateOne({name:"sandy"}, {$set:{fullTime: true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find({name: "sandy")
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:31)
+
+> 1 |  db.student.find({name: "sandy")
+    |                                ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.find({name: "sandy"})
+[
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: true
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({_id: ObjectId('66befc38bde138b314838728')}, {$set: {fullTime: false}})
+MongoServerError[Location16410]: FieldPath field names may not start with '$'. Consider using $getField or $setField.
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateOne({_id: ObjectId('66befc38bde138b314838728')}, {$set: {fullTime: false}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  },
+  { _id: ObjectId('66befe84bde138b31483872a') },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({id: _id: ObjectId('66befc38bde138b314838728')})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:24)
+
+> 1 | db.student.find({id: _id: ObjectId('66befc38bde138b314838728')})
+    |                         ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({ _id: ObjectId('66befc38bde138b314838728')})
+[
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateOne({_id: ObjectId('66befc38bde138b314838728')}, {$unset: {fullTime: false}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({ _id: ObjectId('66befc38bde138b314838728')})
+[
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateMany({}, {$set: {fullTime:false}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 6,
+  modifiedCount: 6,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    fullTime: false
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.updateMany({fullTime: {$exists: false}}, {$set:{fullTime:true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    fullTime: false
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateOne({name: 'keerthu'}, {$unset: {fullTime: ""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.updateMany({fullTime: {$exists: false}}, {$set:{fullTime:true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.updateMany({fullTime: {$exists: false}}, {$set:{fullTime:true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838728'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.updateMany({fullTime: {$exists: false}}, {$set:{fullTime:true}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.deleteOne({name: 'sandy'})
+{ acknowledged: true, deletedCount: 1 }
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.deleteMany({fullTime: True})
+ReferenceError: True is not defined
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.deleteMany({fullTime: true})
+{ acknowledged: true, deletedCount: 0 }
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.deleteMany({registerDate: {})
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({registerDate: {$exists: false}})
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' }
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateMany({age: less thAtlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateMany({age: {$lt: 20}}, {$set, {registerDate: new Date()}})
+Uncaught:
+SyntaxError: Unexpected token (1:47)
+
+> 1 | db.student.updateMany({age: {$lt: 20}}, {$set, {registerDate: new Date()}})
+    |                                                ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updateMany({age: {$lt: 20}}, {$set: {registerDate: new Date()}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befb0cbde138b314838726'),
+    name: 'Spongebob',
+    age: 30,
+    gpa: 3.2,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838727'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5,
+    fullTime: false
+  },
+  {
+    _id: ObjectId('66befc38bde138b314838729'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8,
+    fullTime: false
+  },
+  { _id: ObjectId('66befe84bde138b31483872a'), fullTime: false },
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    registerDate: ISODate('2024-08-16T12:24:42.663Z')
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.deleteMany({registerDate: {$exists: false}})
+{ acknowledged: true, deletedCount: 4 }
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find()
+[
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    registerDate: ISODate('2024-08-16T12:24:42.663Z')
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({name: {$in: ["spongebob", "keerthu"]}})
+[
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    registerDate: ISODate('2024-08-16T12:24:42.663Z')
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3,8}])
+Uncaught:
+SyntaxError: Unexpected token (1:124)
+
+> 1 |  db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3,8}])
+    |                                                                                                                             ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3,8}])
+Uncaught:
+SyntaxError: Unexpected token (1:124)
+
+> 1 |  db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3,8}])
+    |                                                                                                                             ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school>  db.student.insertMany([{name: "patrick", age:38, gpa:1.5}, {name: "sandy", age:27, gpa:4.0}, {name:"gerry", age:20, gpa:3.8}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66bf46d6bde138b31483872c'),
+    '1': ObjectId('66bf46d6bde138b31483872d'),
+    '2': ObjectId('66bf46d6bde138b31483872e')
+  }
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.find({$and: [{fullTime: false}, {age:{$lte: 22}}]})
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.updat
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.find({$and: [{gpa: {$lt: 5.0}}, {age:{$lte: 22}}]})
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.find({name: "gerry"})
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> 
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> 
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({$and: [{gpa: {$lt: 5.0}}, {age:{$lte: 22}}]})
+[
+  {
+    _id: ObjectId('66bf46d6bde138b31483872e'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({$or: [{gpa: {$lt: 5.0}}, {age:{$lte: 22}}]})
+[
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    registerDate: ISODate('2024-08-16T12:24:42.663Z')
+  },
+  {
+    _id: ObjectId('66bf46d6bde138b31483872c'),
+    name: 'patrick',
+    age: 38,
+    gpa: 1.5
+  },
+  {
+    _id: ObjectId('66bf46d6bde138b31483872d'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  },
+  {
+    _id: ObjectId('66bf46d6bde138b31483872e'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({$nor: [{gpa: {$lt: 5.0}}, {age:{$lte: 22}}]})
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.find({age: {$lt: 30}})
+[
+  {
+    _id: ObjectId('66befefebde138b31483872b'),
+    name: 'keerthu',
+    age: 14,
+    joined_date: ISODate('2024-08-16T07:25:50.517Z'),
+    graduation_date: null,
+    courses: [ 'maths', 'bio' ],
+    address: { street: '123 Fake st', city: 'chennai', zip: '600092' },
+    registerDate: ISODate('2024-08-16T12:24:42.663Z')
+  },
+  {
+    _id: ObjectId('66bf46d6bde138b31483872d'),
+    name: 'sandy',
+    age: 27,
+    gpa: 4
+  },
+  {
+    _id: ObjectId('66bf46d6bde138b31483872e'),
+    name: 'gerry',
+    age: 20,
+    gpa: 3.8
+  }
+]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.students.find({name: "keerthu"}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'school.students',
+    indexFilterSet: false,
+    parsedQuery: { name: { '$eq': 'keerthu' } },
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    winningPlan: { stage: 'EOF' },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 0,
+    executionTimeMillis: 0,
+    totalKeysExamined: 0,
+    totalDocsExamined: 0,
+    executionStages: {
+      stage: 'EOF',
+      nReturned: 0,
+      executionTimeMillisEstimate: 0,
+      works: 1,
+      advanced: 0,
+      needTime: 0,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1
+    }
+  },
+  command: { find: 'students', filter: { name: 'keerthu' }, '$db': 'school' },
+  serverInfo: {
+    host: 'cluster0-shard-00-02.oi1o4.mongodb.net',
+    port: 27017,
+    version: '7.0.12',
+    gitVersion: 'b6513ce0781db6818e24619e8a461eae90bc94fc'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 16793600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 33554432,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted'
+  },
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1723814541, i: 10 }),
+    signature: {
+      hash: Binary.createFromBase64('S/M1NXczr36Qk0wSG2i8GxCsrSk=', 0),
+      keyId: Long('7353333363391856646')
+    }
+  },
+  operationTime: Timestamp({ t: 1723814541, i: 10 })
+}
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.getIndexes()
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.dropIndex("")
+MongoshInternalError[IndexNotFound]: index not found with name []
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.student.dropIndex("_id_")
+MongoServerError[InvalidOptions]: cannot drop _id index
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.createCollection("teachers", {capped: true, size: 1000000, max: 10}, {autoIndexId: false})
+{ ok: 1 }
+Atlas atlas-cj6gv0-shard-0 [primary] school> show collections
+student
+teachers
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.createCollections(courses)
+ReferenceError: courses is not defined
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.createCollections("courses")
+TypeError: db.createCollections is not a function
+Atlas atlas-cj6gv0-shard-0 [primary] school> show collections
+student
+teachers
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.courses.drop()
+true
+Atlas atlas-cj6gv0-shard-0 [primary] school> show collections
+student
+teachers
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.createCollection("courses")
+{ ok: 1 }
+Atlas atlas-cj6gv0-shard-0 [primary] school> show collections
+courses
+student
+teachers
+Atlas atlas-cj6gv0-shard-0 [primary] school> db.courses.drop()
+true
+Atlas atlas-cj6gv0-shard-0 [primary] school> show collections
+student
+teachers
+Atlas atlas-cj6gv0-shard-0 [primary] school> script session_output.txt
+Uncaught:
+SyntaxError: Missing semicolon. (1:6)
+
+> 1 | script session_output.txt
+    |       ^
+  2 |
+
+Atlas atlas-cj6gv0-shard-0 [primary] school> 
+
+
