@@ -1,2 +1,6 @@
 dnspython==2.6.1
 pymongo==4.8.0
+fastapi 
+uvicorn 
+motor 
+pydantic
